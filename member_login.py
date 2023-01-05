@@ -2,7 +2,6 @@ import  datetime
 import pytz
 import requests
 import sqlite3
-from string import printable
 import Member_registration
 import project_functions
 
@@ -89,7 +88,6 @@ def mem_login():
                                                 print("you have made an invalid entry"'\n'
                                                       "Please note that special characters,letters, combination of both special characters and letters"'\n'
                                                       "or the combination any of the previously mentioned with number is not an acceptable input"'\n')
-
                                             else:
                                                 u_deposit_amount = project_functions.first_deposit_amount_check(deposit_amount)
                                                 e_user_id = project_functions.email_userid_recall(email)
@@ -126,6 +124,73 @@ def mem_login():
                                                     break
                                                 else:
                                                     print("Your first ever deposit can not be less than $200!")
+                                    elif homepage_options == 'A':
+                                        while True:
+                                            options = input("A          EURO/BTC"'\n'
+                                                            "B          USD/BTC"'\n'
+                                                            "C          ETH/BTC"'\n'
+                                                            "Select an option from the above: ").strip().upper()
+                                            options_validation = project_functions.trade_option_match(options)
+                                            if options_validation == 'INVALID INPUT':
+                                                print('You have made an invalid input! Kindly input between A-C')
+                                            else:
+                                                if options == 'A':
+                                                    count1 = 0
+                                                    while count1 < 1:
+                                                        option_A = input("A     BTC will rise against EURO"'\n'
+                                                                         "B     BTC will drop against EURO"'\n'
+                                                                         "Select an option above for your prediction: ").strip().upper()
+                                                        option_A_validation = project_functions.trade_option_match(option_A)
+                                                        if option_A_validation == 'INVALID OPTION':
+                                                            print(
+                                                                'You have made an invalid input! Kindly input between A-B')
+                                                        else:
+                                                            count1 += 1
+                                                    count2 = 0
+                                                    while count2 < 1:
+                                                        trading_amount = input(
+                                                            'How much will you like to trade?: ').strip()
+                                                        trading_amount_validation = project_functions.amount_validation(
+                                                            trading_amount)
+                                                        if trading_amount_validation == ["invalid entry"]:
+                                                            print("you have made an invalid entry"'\n'
+                                                                  "Please note that special characters,letters, combination of both special characters and letters"'\n'
+                                                                  "or the combination any of the previously mentioned with number is not an acceptable input"'\n')
+                                                        else:
+                                                            wallet_balance = project_functions.email_balance_check(
+                                                                email)
+                                                            if trading_amount > wallet_balance:
+                                                                print(
+                                                                    "you can not stake/trade more than your wallet balance")
+                                                            else:
+                                                                count2 += 1
+                                                    count3 = 0
+                                                    while count3 < 1:
+                                                        duration_option = input(
+                                                            "For how long will you like to trade?"'\n'
+                                                            "A      1min"'\n'
+                                                            "B      2min"'\n'
+                                                            "C      3min"'\n'
+                                                            "Select an option : ")
+                                                        duration_validation = project_functions.trade_option_match(duration_option)
+                                                        if duration_validation == 'INVALID OPTION':
+                                                            print(
+                                                                'You have made an invalid input! Kindly input between A-C in correspondence to the displayed acceptable duration')
+                                                        else:
+                                                            count3 += 1
+                                                    count4 = 0
+                                                    while count4 < 1:
+                                                        percentage = input(
+                                                            "Enter the percentage return you wish to trade at: ")
+                                                        trading_percentage_validation = project_functions.percentage_return_input_test(
+                                                            percentage)
+                                                        if trading_percentage_validation == "invalid entry":
+                                                            print("you have made an invalid entry"'\n'
+                                                                  "kindly note that the acceptable percentage is between 30-90 percent"'\n'
+                                                                  "also any other character apart from digits or decimal input is not acceptable")
+                                                        else:
+                                                            print("Options saved")
+
                                     break_loop1 += 'B'
                                     break_loop2 += 'B'
                                     break_loop3 += 'B'
@@ -149,7 +214,7 @@ def mem_login():
                     balance = project_functions.username_balance_check(username)
                     print(f"Welcome {username}!"'\n'
                           f"Your wallet balance is ${balance}"'\n'
-                          f'Here are the current exchange rates of bitcoin :')  # modify welcome message to display username
+                          f'Here are the current exchange rates of bitcoin :')
                     usd_rate = api_call('usd')
                     eth_rate = api_call('eth')
                     eur_rate = api_call('eur')
@@ -215,14 +280,3 @@ def mem_login():
                 print("Incorrect password!")
 
 mem_login()
-
-
-"""
-break out to the main page that will contain mainly
--registration
--login
-
-work on the last part of loggin in with correct username and password
-
-"""
-#   fix regex for checking amount(it is rejecting amount more than 200 so far it starts from 1)
