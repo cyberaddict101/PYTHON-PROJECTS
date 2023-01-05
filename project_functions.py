@@ -54,7 +54,10 @@ def email_balance_check(email):
     sql_select = f'SELECT wallet_balance FROM Registered_members WHERE email_address = "{email}"'
     cursor.execute(sql_select)
     email_balance = cursor.fetchall()
-    return email_balance
+    if len(email_balance) == 1:
+        return email_balance[0][0]
+    else:
+        return email_balance
 
 
 def email_username(email):
@@ -133,6 +136,22 @@ def first_deposit_amount_check(amount):
     else:
         return ["below 200"]
 
+
+def percentage_return_input_test(percentage):
+    pattern = r"^(90|[3-8]\d)|([3-8]\d\.\d+)$"
+    match = re.fullmatch(pattern,percentage)
+    if match:
+        return "valid entry"
+    else:
+        return "invalid entry"
+
+def trade_option_match(option):
+    pattern = r"[A-C]"
+    match = re.fullmatch(pattern, option)
+    if match:
+        return 'VALID INPUT'
+    else:
+        return 'INVALID INPUT'
 
 #   CREATE TABLE FUNCTIONS
 
